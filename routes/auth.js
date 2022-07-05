@@ -12,12 +12,40 @@ router.post("/register", async (req, res) => {
     username: req.body.username,
     email: req.body.email,
     // encrypting password using crypto-js
-    password: CryptoJS.AES.encrypt(req.body.password, process.env.PASS_SEC).toString(),
+    password: CryptoJS.AES.encrypt(
+      req.body.password,
+      process.env.PASS_SEC
+    ).toString(),
   });
 
   try {
     const savedUser = await newUser.save();
     res.status(201).json(savedUser);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Internal server error");
+  }
+});
+
+// LOGIN
+router.post("/login", async (req, res) => {
+  try {
+    // checking if the user exist
+    const user = await User.findOne({ username: req.body.username });
+
+    !user && res.status(401).send("Wrong credentials");
+
+    // decrypting password 
+    const hashedPassword = CryptoJS.AES.decrypt(
+      user.password,
+      process.env.PASS_SEC
+    );
+    const pwd = hashedPassword.toString(CryptoJS.enc.Utf8);
+    pwd !== req.body.password && res.status(401).send("Wrong credentials");
+    
+   
+    const { password, ...others } = user._doc; // desturcturing user
+    res.status(200).json(others);  // sending user info other than password
   } catch (err) {
     res.status(500).send("Internal server error");
   }
