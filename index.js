@@ -3,6 +3,7 @@ const app = express();
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const userRoute = require("./routes/user");
+const authRoute = require("./routes/auth");
 
 // Loading the environment variables
 dotenv.config();
@@ -21,7 +22,7 @@ mongoose
 app.use(express.json());
 
 // ENDPOINTS
-app.use("/api/user", userRoute);
+app.use("/api/auth", authRoute);
 
 // Listening connections
 app.listen(process.env.PORT || 5000, () => {
