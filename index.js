@@ -23,6 +23,7 @@ app.use(express.json());
 
 // ENDPOINTS
 app.use("/api/auth", authRoute);
+app.use("/api/users", userRoute);
 
 // Listening connections
 app.listen(process.env.PORT || 5000, () => {
