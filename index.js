@@ -7,9 +7,14 @@ const authRoute = require("./routes/auth");
 const productRoute = require("./routes/product");
 const cartRoute = require("./routes/cart");
 const orderRoute = require("./routes/order");
+const stripeRoute = require("./routes/stripe");
+const cors = require("cors");
+
 
 // Loading the environment variables
 dotenv.config();
+
+mongoose.set('strictQuery', false);
 
 // Connecting to Mongo database
 mongoose
@@ -25,11 +30,13 @@ mongoose
 app.use(express.json());
 
 // ENDPOINTS
+app.use(cors());
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/products", productRoute);
 app.use("/api/cart", cartRoute);
 app.use("/api/orders", orderRoute);
+app.use("/api/checkout", stripeRoute);
 
 // Listening connections
 app.listen(process.env.PORT || 5000, () => {
