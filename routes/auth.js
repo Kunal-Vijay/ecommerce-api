@@ -44,7 +44,7 @@ router.post("/login", async (req, res) => {
     const pwd = hashedPassword.toString(CryptoJS.enc.Utf8);
     pwd !== req.body.password && res.status(401).send("Wrong credentials");
 
-    const accessWebToken = jwt.sign(
+    const accessToken = jwt.sign(
       {
         id: user._id,
         isAdmin: user.isAdmin,
@@ -54,7 +54,7 @@ router.post("/login", async (req, res) => {
     );
 
     const { password, ...others } = user._doc; // desturcturing user
-    res.status(200).json({ ...others, accessWebToken }); // sending user info other than password
+    res.status(200).json({ ...others, accessToken }); // sending user info other than password
   } catch (err) {
     res.status(500).send("Internal server error");
   }
