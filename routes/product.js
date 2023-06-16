@@ -55,7 +55,7 @@ router.get("/find/:id", async (req, res) => {
 });
 
 // GET ALL Product
-router.get("/find", async (req, res) => {
+router.get("/", async (req, res) => {
   const qNew = req.query.new; // display new Products
   const qCategory = req.query.category; // display new Products
   try {
