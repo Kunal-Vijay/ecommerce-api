@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
+const Client_URL = process.env.Client_URL;
+
 router.post("/payment", async (req, res) => {
   const line_items = req.body.cartItems.map((item) => {
     return {
@@ -20,13 +22,11 @@ router.post("/payment", async (req, res) => {
     };
   });
   
-  console.log(line_items);
-
   const session = await stripe.checkout.sessions.create({
     line_items,
     mode: "payment",
-    success_url: "http://localhost:3000/success",
-    cancel_url: "http://localhost:3000/cart",
+    success_url: `${Client_URL}/success`,
+    cancel_url: `${Client_URL}/cart`,
   });
 
   res.send({ url: session.url});
