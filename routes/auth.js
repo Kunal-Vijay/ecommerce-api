@@ -34,7 +34,10 @@ router.post("/login", async (req, res) => {
     // checking if the user exist
     const user = await User.findOne({ username: req.body.username });
 
-    !user && res.status(401).send("Wrong credentials");
+    if (!user) {
+      res.status(401).send("Wrong credentials");
+      return;
+    }
 
     // decrypting password
     const hashedPassword = CryptoJS.AES.decrypt(
@@ -42,7 +45,11 @@ router.post("/login", async (req, res) => {
       process.env.PASS_SEC
     );
     const pwd = hashedPassword.toString(CryptoJS.enc.Utf8);
-    pwd !== req.body.password && res.status(401).send("Wrong credentials");
+
+    if (pwd !== req.body.password) {
+      res.status(401).send("Wrong credentials");
+      return;
+    }
 
     const accessToken = jwt.sign(
       {
@@ -59,5 +66,6 @@ router.post("/login", async (req, res) => {
     res.status(500).send("Internal server error");
   }
 });
+
 
 module.exports = router;
