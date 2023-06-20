@@ -20,9 +20,12 @@ node ./index.js
 ```sh
 MONGO_URL=mongodb+srv://<username>:<password>@cluster0.srzpb.mongodb.net/ecommerce?retryWrites=true&w=majority
 
-PASS_SEC=etisecremmoce
+PASS_SEC=********
 
-JWT_SEC=encryptofied
+JWT_SEC=*********
+
+STRIPE_SECRET_KEY=sk_test_.........
+Client_URL=http://localhost:3000
 
 ```
 # Routes
